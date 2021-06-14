@@ -10,14 +10,16 @@ public class PlayerMovement : MonoBehaviour
     public float jumpHeight = 3f; // How high our player can jump
     public Transform groundCheck; // Empty game object to check when our player reaches the floor (attatched to the very bottom of our character)
     public float groundDistance = 0.4f; // Distance from ground (groundCheck)
-    public LayerMask groundMask;
+    public LayerMask groundMask; 
 
     Vector3 velocity; // How fast player falls (gravity)
     bool isGrounded; // Checks if our player is on the ground
  
     void Update()
     {
+        // Constantly checks to see if out player is on the ground 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
 
         if(isGrounded && velocity.y < 0)
         {
@@ -28,7 +30,6 @@ public class PlayerMovement : MonoBehaviour
         float z = Input.GetAxis("Vertical"); 
 
         Vector3 move = transform.right * x + transform.forward * z;
-
         controller.Move(move * speed * Time.deltaTime);
 
         // If the spacebar is pressed and we are on the ground then change our velocity upwards to jump
@@ -38,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         velocity.y += gravity * Time.deltaTime;
-
         controller.Move(velocity * Time.deltaTime);
     }
 }

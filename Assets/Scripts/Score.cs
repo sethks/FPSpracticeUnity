@@ -8,37 +8,41 @@ public class Score : MonoBehaviour
     public Text scoreText; // Creates our score text object
     public Text accuracyText; // Creates our accuracy text object
     public Text timeText; // Creates our time text object
-    public float timeRemaining; 
-    public float currentAccuracy; // Calculated by mouse clicks and current score
+    public float timeRemaining; // Time remaining until game is over (Refers to out timeText)
+    public float currentAccuracy; // Calculated by mouse clicks and current score (Refers to accuracyText)
+    public float currentScore; // If destroy object was called then we gain n amount of points (Refers to scoreText)
     public float mouseClicks; // Updates everytime we click
-    public float currentScore; // If destroy object was called then we gain n amount of points
-    private bool timerRunning = false; 
+    private bool timerRunning = false; // Same as game over
+
     
     void Start()
     {
-        timerRunning = true;
-        scoreText.text = "Score: " + currentScore;
-        accuracyText.text = "Accuracy: ";
+        timerRunning = true; // Game Start
+        scoreText.text = "Score: " + currentScore; // Init score UI
+        accuracyText.text = "Accuracy: "; // Init accuracy UI
     }
 
     void Update()
     {
+        // as long as timer is running, our game will continue to run and display the time
         if(timerRunning)
         {
+            // subtracts time from the UI as long as the time is over 0
             if(timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;
                 DisplayTime(timeRemaining);
             }
+            //if our timeRemaining variable is less than 0 then our game has ended
             else
             {
                 timeRemaining = 0;
                 timerRunning = false;
-                print("GAME WOULD END HERE");
-                //UnityEditor.EditorApplication.isPlaying = false;
+                if(mouseClicks == currentScore) currentAccuracy = 100.0f; //If the number of clicks were equal to the score then the player had perfect accuracy
+                //UnityEditor.EditorApplication.isPlaying = false; FOR TESTING
             }
         }
-        // Call our updateAccuracty method everytime we click our mouse no matter if we missed or not
+        // Call our updateAccuracy method everytime we click 
         if(Input.GetMouseButtonDown(0)) updateAccuracy();
     }
 
@@ -57,7 +61,7 @@ public class Score : MonoBehaviour
         accuracyText.text = "Accuracy: " + currentAccuracy.ToString("00");
     }
 
-    //Metjpd that displays our time and formats it
+    //Method that displays our time and formats it
     void DisplayTime(float timeToDisplay)
     {
         timeToDisplay += 1;
