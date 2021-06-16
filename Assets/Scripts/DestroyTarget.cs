@@ -7,25 +7,36 @@ public class DestroyTarget : MonoBehaviour
     public float timeSpawned; // Keeps track of the time the target is spawned for (for future score calculations)
     public float totalShotTime; // Adds up the total time it took the player to shoot each target
     public float averageShotTime; // TO-DO --- Averages the time the player took to destroy each target
-    public bool isCalled = false; // Resets our timeSpawned variable to zero only if a object was hit
+    public static bool isCalled = false; // Resets our timeSpawned variable to zero only if a object was hit
+    public static bool isRunning = false;
+    PauseMenu pauseMenu;
+
+    void Start()
+    {
+        enabled = true;
+        isRunning = true;
+    }
 
     void Update()
     {
-        //Increase the time our target has spawned
-        timeIncrease();
-
-        //Only call our destroyTarget method if the mouse is clicked (so we are not constantly running our method every frame)
-        if(Input.GetMouseButtonDown(0)) 
+        if(isRunning)
         {
-            destroyTarget();
-            //Resets the the time spawned to only if the target is destroyed (to keep track of average time per target destroyed)
+            if(Score.isgameOverCalled == true)
+            { 
+                enabled = false;
+            }
+            //Increase the time our target has spawned
+            timeIncrease();
+            //Only call our destroyTarget method if the mouse is clicked (so we are not constantly running our method every frame)
+            if(Input.GetMouseButtonDown(0))  destroyTarget();
+
+             //Resets the the time spawned to only if the target is destroyed (to keep track of average time per target destroyed)
             if(Input.GetMouseButtonDown(0) && isCalled) 
             {
                 totalShotTime += timeSpawned;
                 timeSpawned = 0;
             }
         }
-        
     }
 
     //Method that destroys the spawned traget
@@ -40,6 +51,7 @@ public class DestroyTarget : MonoBehaviour
         {
             //Create a sphere/collider at the place we clicked
             SphereCollider sc = hit.collider as SphereCollider;
+
             //Checking if that sphere collider has the tag "Target"
             if(sc.gameObject.CompareTag("Target"))
             {

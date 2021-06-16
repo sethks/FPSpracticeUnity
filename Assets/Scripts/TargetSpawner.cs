@@ -15,11 +15,6 @@ public class TargetSpawner : MonoBehaviour
         spawnObject();
     }
 
-    void Update()
-    {
-        
-    }
-
     // Method that spawns our object in a random location from our List<Transform>
     public void spawnObject()
     {

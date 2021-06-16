@@ -12,12 +12,16 @@ public class Score : MonoBehaviour
     public float currentAccuracy; // Calculated by mouse clicks and current score (Refers to accuracyText)
     public float currentScore; // If destroy object was called then we gain n amount of points (Refers to scoreText)
     public float mouseClicks; // Updates everytime we click
-    private bool timerRunning = false; // Same as game over
+    public static bool timerRunning = false; // If our timer is false then our game is over
+    public static bool isgameOverCalled = false; //Checks if our GameOver function is called;
+    public GameObject gameOverUI; 
 
     
     void Start()
     {
         timerRunning = true; // Game Start
+        isgameOverCalled = false;
+        enabled = true;
         scoreText.text = "Score: " + currentScore; // Init score UI
         accuracyText.text = "Accuracy: "; // Init accuracy UI
     }
@@ -39,11 +43,12 @@ public class Score : MonoBehaviour
                 timeRemaining = 0;
                 timerRunning = false;
                 if(mouseClicks == currentScore) currentAccuracy = 100.0f; //If the number of clicks were equal to the score then the player had perfect accuracy
-                //UnityEditor.EditorApplication.isPlaying = false; FOR TESTING
+                //Call our game over UI once the timer hits 0 
+                GameOverScreen();
             }
+                // Call our updateAccuracy method everytime we click 
+            if(Input.GetMouseButtonDown(0)) updateAccuracy();
         }
-        // Call our updateAccuracy method everytime we click 
-        if(Input.GetMouseButtonDown(0)) updateAccuracy();
     }
 
     //Method that just increases our score in the UI
@@ -72,4 +77,11 @@ public class Score : MonoBehaviour
         timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
+    public void GameOverScreen()
+    {
+        gameOverUI.SetActive(true);
+        Time.timeScale = 0f;
+        isgameOverCalled = true;
+        enabled = false;
+    }
 }

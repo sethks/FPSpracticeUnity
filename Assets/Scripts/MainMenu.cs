@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -17,5 +18,5 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    //TO-DO --- ADD OPTIONS MENU THAT CONTAINS SOUNDS, SENSITIVTY, ETC...
+
 }
