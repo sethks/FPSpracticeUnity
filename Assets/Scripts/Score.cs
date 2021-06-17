@@ -10,10 +10,10 @@ public class Score : MonoBehaviour
     public Text timeText; // Creates our time text object
     public float timeRemaining; // Time remaining until game is over (Refers to out timeText)
     public float currentAccuracy; // Calculated by mouse clicks and current score (Refers to accuracyText)
-    public float currentScore; // If destroy object was called then we gain n amount of points (Refers to scoreText)
+    public static float currentScore; // If destroy object was called then we gain n amount of points (Refers to scoreText)
     public float mouseClicks; // Updates everytime we click
-    public static bool timerRunning = false; // If our timer is false then our game is over
-    public static bool isgameOverCalled = false; //Checks if our GameOver function is called;
+    public static bool timerRunning; // If our timer is false then our game is over
+    public static bool isgameOverCalled; //Checks if our GameOver function is called;
     public GameObject gameOverUI; 
 
     
@@ -22,6 +22,13 @@ public class Score : MonoBehaviour
         timerRunning = true; // Game Start
         isgameOverCalled = false;
         enabled = true;
+
+        //Init all values to 0 so stats are saved if the player restarts the game or goes to the main menu.
+        timeRemaining = 10.0f;
+        currentAccuracy = 100.0f;
+        currentScore = 0f;
+        mouseClicks = 0f;
+
         scoreText.text = "Score: " + currentScore; // Init score UI
         accuracyText.text = "Accuracy: "; // Init accuracy UI
     }

@@ -6,10 +6,9 @@ public class DestroyTarget : MonoBehaviour
 {
     public float timeSpawned; // Keeps track of the time the target is spawned for (for future score calculations)
     public float totalShotTime; // Adds up the total time it took the player to shoot each target
-    public float averageShotTime; // TO-DO --- Averages the time the player took to destroy each target
+    public float averageShotTime; // Averages the time the player took to destroy each target
     public static bool isCalled = false; // Resets our timeSpawned variable to zero only if a object was hit
     public static bool isRunning = false;
-    PauseMenu pauseMenu;
 
     void Start()
     {
@@ -23,6 +22,11 @@ public class DestroyTarget : MonoBehaviour
         {
             if(Score.isgameOverCalled == true)
             { 
+                calculateAvgShotTime();
+                print("Current Score " + Score.currentScore);
+                print("Total Shot Time " + totalShotTime);
+                print("Average Shot Time " + averageShotTime);
+
                 enabled = false;
             }
             //Increase the time our target has spawned
@@ -68,5 +72,10 @@ public class DestroyTarget : MonoBehaviour
     void timeIncrease()
     {
         timeSpawned += Time.deltaTime;
+    }
+
+    void calculateAvgShotTime()
+    {
+        averageShotTime = (Score.currentScore / totalShotTime);
     }
 }
