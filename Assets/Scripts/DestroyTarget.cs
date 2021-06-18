@@ -6,8 +6,8 @@ public class DestroyTarget : MonoBehaviour
 {
     public float timeSpawned; // Keeps track of the time the target is spawned for (for future score calculations)
     public float totalShotTime; // Adds up the total time it took the player to shoot each target
-    public float averageShotTime; // Averages the time the player took to destroy each target
-    public static bool isCalled = false; // Resets our timeSpawned variable to zero only if a object was hit
+    public static float averageShotTime; // Averages the time the player took to destroy each target
+    private bool isCalled = false; // Resets our timeSpawned variable to zero only if a object was hit
     public static bool isRunning = false;
 
     void Start()
@@ -18,28 +18,30 @@ public class DestroyTarget : MonoBehaviour
 
     void Update()
     {
+        // if this current class is running
         if(isRunning)
         {
-            if(Score.isgameOverCalled == true)
+            //if our gameOver boolean is true then calculate our average shot time, and disable the update method so no further calls towards clicks or time increase will be made
+            if(Score.isgameOverCalled)
             { 
                 calculateAvgShotTime();
-                print("Current Score " + Score.currentScore);
-                print("Total Shot Time " + totalShotTime);
-                print("Average Shot Time " + averageShotTime);
-
                 enabled = false;
             }
+
             //Increase the time our target has spawned
             timeIncrease();
-            //Only call our destroyTarget method if the mouse is clicked (so we are not constantly running our method every frame)
-            if(Input.GetMouseButtonDown(0))  destroyTarget();
 
-             //Resets the the time spawned to only if the target is destroyed (to keep track of average time per target destroyed)
-            if(Input.GetMouseButtonDown(0) && isCalled) 
+            //Only call our destroyTarget method if the mouse is clicked (so we are not constantly running our method every frame)
+            if(Input.GetMouseButtonDown(0))
             {
-                totalShotTime += timeSpawned;
-                timeSpawned = 0;
-            }
+                destroyTarget();
+                //Resets the the time spawned to 0 ONLY if the target is destroyed (to keep track of average time per target destroyed)
+                if(Input.GetMouseButtonDown(0) && isCalled) 
+                {
+                    totalShotTime += timeSpawned;
+                    timeSpawned = 0;
+                }
+            }  
         }
     }
 
@@ -51,7 +53,7 @@ public class DestroyTarget : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         //Checks if anything that contains a physics component overlapped our raycast
-        if(Physics.Raycast(ray, out hit))
+        if(Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
         {
             //Create a sphere/collider at the place we clicked
             SphereCollider sc = hit.collider as SphereCollider;
@@ -60,7 +62,7 @@ public class DestroyTarget : MonoBehaviour
             if(sc.gameObject.CompareTag("Target"))
             {
                 //If it contains the tag than destroy the target and call updateScore method, as well as spawnObject method
-                isCalled = true;
+                isCalled = true; // Checks if we actually hit the target
                 Destroy(sc.gameObject);
                 FindObjectOfType<Score>().updateScore();
                 FindObjectOfType<TargetSpawner>().spawnObject();
@@ -74,8 +76,9 @@ public class DestroyTarget : MonoBehaviour
         timeSpawned += Time.deltaTime;
     }
 
-    void calculateAvgShotTime()
+    //Calculates our average reaction time and converts it to miliseconds
+    public void calculateAvgShotTime()
     {
-        averageShotTime = (Score.currentScore / totalShotTime);
+        averageShotTime = (totalShotTime / Score.targetHit) * 1000;
     }
 }
