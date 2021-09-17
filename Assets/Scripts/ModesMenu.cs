@@ -11,18 +11,6 @@ public class ModesMenu : MonoBehaviour
         SceneManager.LoadScene(2);
     }
 
-    // TO-DO --- loads multiTarget gamemode
-    // public void multiTarget()
-    // {
-
-    // }
-
-    // TO-DO --- loads trackTarget gamemode
-    // public void targetTrack()
-    // {
-
-    // }
-
     public void backButton()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);

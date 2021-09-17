@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TargetSpawner : MonoBehaviour
 {
-    public int targetsSpawned = 0; //TO-DO --- Keeps track the number of targets that spawned (for future score calculations)
+    public int targetsSpawned = 0;  // Keeps track the number of targets that spawned 
     public GameObject targetObject; // Creates the target that spawns in our grid (Can be anything)
     public List<Transform> gridLocations; // List of Transform locations to choose where the targets spawn
     public Transform dupeChecker; // Empty gameobject that makes sure our targets don't spawn in the same place twice
